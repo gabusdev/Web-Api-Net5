@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +15,30 @@ namespace Web_Api_Net5
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.File(path: "c:\\TestNet5\\logs\\log-.txt",
+                    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
+                    rollingInterval: RollingInterval.Day,
+                    restrictedToMinimumLevel: LogEventLevel.Information
+                    ).CreateLogger();
+            try
+            {
+                Log.Information("Application is Starting");
+                CreateHostBuilder(args).Build().Run();
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Aplication Failed to Start");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .UseSerilog()
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
