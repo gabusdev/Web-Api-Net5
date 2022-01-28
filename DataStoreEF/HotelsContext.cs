@@ -4,9 +4,9 @@ using System;
 
 namespace DataStoreEF
 {
-    public class SqlServerDatabaseContext: DbContext
+    public class HotelsContext: DbContext
     {
-        public SqlServerDatabaseContext(DbContextOptions option) : base(option) {}
+        public HotelsContext(DbContextOptions option) : base(option) {}
 
         public DbSet<Country> Countries { get; set; }
         

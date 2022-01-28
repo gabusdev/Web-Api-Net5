@@ -1,6 +1,6 @@
 using AppServices.MyCors;
 using AppServices.MySwagger;
-using DataStoreEF;
+using AppServices.MySqlServerContext;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -32,7 +32,7 @@ namespace Web_Api_Net5
         {
             var conString = Configuration.GetConnectionString("sqlConnection");
             
-            services.AddSqlServerService(conString);
+            services.AddMySqlServerContext(conString);
             services.AddMyCorsExtensions();
             services.AddControllers();
             services.AddMySwagger(Configuration);

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataStoreEF.Migrations
 {
-    [DbContext(typeof(SqlServerDatabaseContext))]
+    [DbContext(typeof(HotelsContext))]
     [Migration("20220123223522_DatabaseCreated")]
     partial class DatabaseCreated
     {
