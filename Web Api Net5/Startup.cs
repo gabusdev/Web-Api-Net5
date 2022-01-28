@@ -1,3 +1,5 @@
+using AppServices.MyCors;
+using AppServices.MySwagger;
 using DataStoreEF;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,8 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using MyCors;
-using MySwaggerExtensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,8 +46,8 @@ namespace Web_Api_Net5
                 app.UseDeveloperExceptionPage();
             }
             app.UseMySwagger();
-            app.UseHttpsRedirection();
             app.UseMyCorsExtensions();
+            app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
