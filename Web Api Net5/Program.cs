@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AppServices.MyLogging;
 
 namespace Web_Api_Net5
 {
@@ -15,12 +16,7 @@ namespace Web_Api_Net5
     {
         public static void Main(string[] args)
         {
-            Log.Logger = new LoggerConfiguration()
-                .WriteTo.File(path: "c:\\TestNet5\\logs\\log-.txt",
-                    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
-                    rollingInterval: RollingInterval.Day,
-                    restrictedToMinimumLevel: LogEventLevel.Information
-                    ).CreateLogger();
+            Log.Logger = MyLogging.MyConfigureLogger();
             try
             {
                 Log.Information("Application is Starting");
