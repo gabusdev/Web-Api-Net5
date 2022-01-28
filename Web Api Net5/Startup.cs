@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using MyCors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,18 +29,10 @@ namespace Web_Api_Net5
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<HotelsContext>(o => 
-                o.UseSqlServer(Configuration.GetConnectionString("sqlConnection"))
-            );
-            
-            services.AddCors(options => {
-                options.AddPolicy("CorsPolicy", builder =>
-                    builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                 );
-            });
-            
+            services.AddSqlServerService(Configuration);
+            services.AddMyCorsExtensions();
+
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -59,7 +52,7 @@ namespace Web_Api_Net5
 
             app.UseHttpsRedirection();
 
-            app.UseCors("CorsPolicy");
+            app.UseMyCorsExtensions();
 
             app.UseRouting();
 
