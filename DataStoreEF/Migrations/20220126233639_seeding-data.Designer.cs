@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataStoreEF.Migrations
 {
-    [DbContext(typeof(HotelsContext))]
+    [DbContext(typeof(SqlServerDatabaseContext))]
     [Migration("20220126233639_seeding-data")]
     partial class seedingdata
     {

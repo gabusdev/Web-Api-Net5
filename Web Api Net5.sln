@@ -5,9 +5,11 @@ VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web Api", "Web Api Net5\Web Api.csproj", "{9853328F-6B29-4B34-A84E-A97327607F9C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{235D532B-88CA-4A24-AC93-019ABF2CDD24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{235D532B-88CA-4A24-AC93-019ABF2CDD24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataStoreEF", "DataStoreEF\DataStoreEF.csproj", "{537EBCB2-5B91-4657-89C9-EA753F6BFECB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataStoreEF", "DataStoreEF\DataStoreEF.csproj", "{537EBCB2-5B91-4657-89C9-EA753F6BFECB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCorsExtensions", "MyCors\MyCorsExtensions.csproj", "{63ACB5F5-57FB-4492-8421-D747170CF978}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{537EBCB2-5B91-4657-89C9-EA753F6BFECB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{537EBCB2-5B91-4657-89C9-EA753F6BFECB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{537EBCB2-5B91-4657-89C9-EA753F6BFECB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63ACB5F5-57FB-4492-8421-D747170CF978}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63ACB5F5-57FB-4492-8421-D747170CF978}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63ACB5F5-57FB-4492-8421-D747170CF978}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63ACB5F5-57FB-4492-8421-D747170CF978}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
