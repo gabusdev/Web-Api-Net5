@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\DataStoreEF\DataStoreEF.csproj" />
     <ProjectReference Include="..\MyCors\MyCorsExtensions.csproj" />
+    <ProjectReference Include="..\MySwaggerExtensions\MySwaggerJwtExtensions.csproj" />
   </ItemGroup>
 
 </Project>

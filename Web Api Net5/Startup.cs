@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using MyCors;
+using MySwaggerExtensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,10 +35,7 @@ namespace Web_Api_Net5
             services.AddSqlServerService(conString);
             services.AddMyCorsExtensions();
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Web_Api_Net5", Version = "v1" });
-            });
+            services.AddMySwagger(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,18 +44,12 @@ namespace Web_Api_Net5
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Web_Api_Net5 v1"));
             }
-
+            app.UseMySwagger();
             app.UseHttpsRedirection();
-
             app.UseMyCorsExtensions();
-
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
