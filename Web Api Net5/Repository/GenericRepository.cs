@@ -18,16 +18,16 @@ namespace Web_Api_Net5.Repository
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _db = _context.Set<T>();
         }
+        public T Get(int id)
+        {
+            return _db.Find(id);
+        }
 
         public IQueryable<T> GetAll()
         {
             return _db;
         }
 
-        public T Get(int id)
-        {
-            return _db.Find(id);
-        }
 
         public T Find(Expression<Func<T, bool>> match)
         {
@@ -47,7 +47,7 @@ namespace Web_Api_Net5.Repository
 
         public async Task<ICollection<T>> GetAllAsync()
         {
-            return await _db.ToListAsync();
+            return await GetAll().ToListAsync();
         }
 
         public async Task<T> GetAsync(int id)
@@ -115,6 +115,7 @@ namespace Web_Api_Net5.Repository
             {
                 queryable = queryable.Include<T, object>(includeProperty);
             }
+            queryable = queryable.AsSplitQuery();
 
             return queryable;
         }
