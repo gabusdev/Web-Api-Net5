@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Web_Api_Net5.Repository;
 
 namespace Web_Api_Net5
 {
@@ -31,11 +32,13 @@ namespace Web_Api_Net5
         public void ConfigureServices(IServiceCollection services)
         {
             var conString = Configuration.GetConnectionString("sqlConnection");
-            
+
+            services.AddAutoMapper(typeof(Startup));
             services.AddMySqlServerContext(conString);
             services.AddMyCorsExtensions();
             services.AddControllers();
             services.AddMySwagger(Configuration);
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
