@@ -43,5 +43,23 @@ namespace Web_Api_Net5.Controllers
             
             
         }
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<List<Country>>> GetCountry(int id)
+        {
+            try
+            {
+                var country = await _uow.Countries.GetAsync(id);
+                return country is not null
+                    ? Ok(_mapper.Map<CountryDTO>(country)) 
+                    : NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something went wrong on {nameof(GetCountry)}.");
+                return StatusCode(500, "Internal Servel Error, please try again later");
+            }
+
+
+        }
     }
 }

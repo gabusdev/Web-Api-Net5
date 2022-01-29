@@ -38,6 +38,12 @@ namespace Web_Api_Net5
             services.AddMySqlServerContext(conString);
             services.AddMyCorsExtensions();
             services.AddControllers();
+            /**
+             * For Handling Reference Loops Calls when serializing
+            services.AddControllers().AddNewtonsoftJson(o =>
+                o.SerializerSettings.ReferenceLoopHandling =
+                    Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            **/
             services.AddMySwagger(Configuration);
             services.AddTransient<IUnitOfWork, UnitOfWork>();
         }
