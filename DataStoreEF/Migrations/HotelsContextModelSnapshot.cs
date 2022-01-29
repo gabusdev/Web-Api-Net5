@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataStoreEF.Migrations
 {
-    [DbContext(typeof(HotelsContext))]
+    [DbContext(typeof(CoreDbContext))]
     partial class HotelsContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

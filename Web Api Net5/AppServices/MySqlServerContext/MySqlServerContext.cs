@@ -8,7 +8,7 @@ namespace AppServices.MySqlServerContext
     {
         public static IServiceCollection AddMySqlServerContext(this IServiceCollection services, string conString)
         {
-            services.AddDbContext<HotelsContext>(o =>
+            services.AddDbContext<CoreDbContext>(o =>
                 o.UseSqlServer(conString)
             );
             return services;
