@@ -10,6 +10,7 @@ namespace Web_Api_Net5.Utils
         {
             CreateMap<Country, CountryDTO>();
             CreateMap<Hotel, HotelDTO>();
+            CreateMap<RegisterDTO, User>();
         }
     }
 }

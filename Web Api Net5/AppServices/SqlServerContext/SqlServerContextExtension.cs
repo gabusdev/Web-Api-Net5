@@ -11,7 +11,6 @@ namespace AppServices.MySqlServerContext
             services.AddDbContext<CoreDbContext>(o =>
                 o.UseSqlServer(conString)
             );
-            //return services;
         }
     }
 }
