@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace AppServices.MySqlServerContext
 {
-    public static class MySqlServerContext
+    public static class SqlServerContextExtension
     {
         public static void ConfigureSqlServerContext(this IServiceCollection services, string conString)
         {

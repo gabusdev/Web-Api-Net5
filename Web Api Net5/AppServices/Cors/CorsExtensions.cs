@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace AppServices.MyCors
 {
-    public static class MyCorsExtensions
+    public static class CorsExtensions
     {
         public static void ConfigureCors(this IServiceCollection services)
         {

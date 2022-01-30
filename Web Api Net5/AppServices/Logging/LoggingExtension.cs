@@ -4,7 +4,7 @@ using Serilog.Events;
 
 namespace AppServices.MyLogging
 {
-    public static class MyLogging
+    public static class LoggingExtension
     {
         public static Logger ConfigureLogger()
         {

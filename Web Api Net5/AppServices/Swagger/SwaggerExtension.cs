@@ -7,7 +7,7 @@ using Microsoft.OpenApi.Models;
 
 namespace AppServices.MySwagger
 {
-    public static class MySwaggerJwtExtensions
+    public static class SwaggerExtension
     {
         public static void ConfigureSwagger(this IServiceCollection services, IConfiguration config, bool JwtAuth = false)
         {
@@ -63,9 +63,9 @@ namespace AppServices.MySwagger
             return app;
         }
 
-        private static MySwaggerConfig GetConfig(IConfiguration config)
+        private static SwaggerConfig GetConfig(IConfiguration config)
         {
-            return new MySwaggerConfig
+            return new SwaggerConfig
             {
                 Title = config["MySwagger:Title"] ?? "Default Title",
                 Description = config["MySwagger:Description"] ?? "Default API Demo",

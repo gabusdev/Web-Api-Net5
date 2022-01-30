@@ -16,7 +16,7 @@ namespace Web_Api_Net5
     {
         public static void Main(string[] args)
         {
-            Log.Logger = MyLogging.MyConfigureLogger();
+            Log.Logger = LoggingExtension.ConfigureLogger();
             try
             {
                 Log.Information("Application is Starting");

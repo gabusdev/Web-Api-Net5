@@ -1,10 +1,11 @@
 ﻿using Core.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 
 namespace DataStoreEF
 {
-    public class CoreDbContext: DbContext
+    public class CoreDbContext: IdentityDbContext<User>
     {
         public CoreDbContext(DbContextOptions option) : base(option) {}
 
@@ -14,6 +15,8 @@ namespace DataStoreEF
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            base.OnModelCreating(builder);
+
             builder.Entity<Hotel>(entity =>
             {
                 entity.HasOne(h => h.Country)
