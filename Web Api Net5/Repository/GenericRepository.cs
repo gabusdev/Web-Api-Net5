@@ -18,116 +18,63 @@ namespace Web_Api_Net5.Repository
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _db = _context.Set<T>();
         }
-        public T Get(int id)
+
+        public Task AddAsync(T t)
         {
-            return _db.Find(id);
+            throw new NotImplementedException();
         }
 
-        public IQueryable<T> GetAll()
+        public Task AddRangeAsync(List<T> t)
         {
-            return _db;
+            throw new NotImplementedException();
         }
 
-
-        public T Find(Expression<Func<T, bool>> match)
+        public Task<int> CountAsync(Expression<Func<T, bool>> predicate = null)
         {
-            return _db.SingleOrDefault(match);
-        }
-
-        public ICollection<T> FindAll(Expression<Func<T, bool>> match)
-        {
-            return _db.Where(match).ToList();
-        }
-
-        public IQueryable<T> FindBy(Expression<Func<T, bool>> predicate)
-        {
-            IQueryable<T> query = _db.Where(predicate);
-            return query;
-        }
-
-        public async Task<ICollection<T>> GetAllAsync()
-        {
-            return await GetAll().ToListAsync();
-        }
-
-        public async Task<T> GetAsync(int id)
-        {
-            return await _db.FindAsync(id);
-        }
-
-        public async Task AddAsync(T t)
-        {
-            await _db.AddAsync(t);
-        }
-
-        public async Task<T> FindAsync(Expression<Func<T, bool>> match)
-        {
-            return await _db.SingleOrDefaultAsync(match);
-        }
-
-        public async Task<ICollection<T>> FindAllAsync(Expression<Func<T, bool>> match)
-        {
-            return await _db.Where(match).ToListAsync();
+            throw new NotImplementedException();
         }
 
         public void Delete(T entity)
         {
-            _db.Remove(entity);
+            throw new NotImplementedException();
         }
 
-        public async Task UpdateAsync(T t, object key)
+        public async Task<ICollection<T>> FindAllAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
         {
-            T exist = null;
+            var query = AddIncludes(includes);
+            return await query.Where(predicate).ToListAsync();
+        }
 
-            if (key.GetType() == typeof(int[]))
+        public async Task<T> FindOnlyAsync(Expression<Func<T, bool>> match, params Expression<Func<T, object>>[] includes)
+        {
+            var query = AddIncludes(includes);
+            return await query.SingleOrDefaultAsync(match);
+        }
+
+        public async Task<ICollection<T>> GetAllAsync(params Expression<Func<T, object>>[] includes)
+        {
+            var query = AddIncludes(includes);
+            return await query.ToListAsync();
+        }
+
+        public async Task<T> GetAsync(object id, params Expression<Func<T, object>>[] includes)
+        {
+            return await _db.FindAsync(id);
+        }
+
+        public Task UpdateAsync(T t, object key)
+        {
+            throw new NotImplementedException();
+        }
+
+        private IQueryable<T> AddIncludes(Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = _db;
+            foreach (var include in includes)
             {
-                exist = await _db.FindAsync(((int[])key)[0], ((int[])key)[1]);
+                query = query.Include(include);
             }
-            else
-            {
-                exist = await _db.FindAsync(key);
-            }
-            if (exist != null)
-            {
-                _context.Entry(exist).CurrentValues.SetValues(t);
-            }
-        }
-
-        public void Update(T t)
-        {
-            _db.Update(t);
-        }
-
-        public async Task<int> CountAsync()
-        {
-            return await _db.CountAsync();
-        }
-
-        public async Task<ICollection<T>> FindByAsync(Expression<Func<T, bool>> predicate)
-        {
-            return await _db.Where(predicate).ToListAsync();
-        }
-
-        public IQueryable<T> GetAllIncluding(params Expression<Func<T, object>>[] includeProperties)
-        {
-            IQueryable<T> queryable = GetAll();
-            foreach (Expression<Func<T, object>> includeProperty in includeProperties)
-            {
-                queryable = queryable.Include<T, object>(includeProperty);
-            }
-            queryable = queryable.AsSplitQuery();
-
-            return queryable;
-        }
-
-        public async Task AddRangeAsync(List<T> t)
-        {
-            await _db.AddRangeAsync(t);
-        }
-
-        public T FirstOrDefault(Expression<Func<T, bool>> predicate)
-        {
-            T query = _db.FirstOrDefault(predicate);
+            query = query.AsSplitQuery();
             return query;
         }
     }

@@ -8,25 +8,14 @@ namespace Web_Api_Net5.Repository
 {
     public interface IGenericRepository<T> where T : class
     {
-
-        Task<T> GetAsync(int id);
-        Task<ICollection<T>> GetAllAsync();
+        Task<T> GetAsync(object id, params Expression<Func<T, object>>[] includes);
+        Task<ICollection<T>> GetAllAsync(params Expression<Func<T, object>>[] includes);
         Task AddAsync(T t);
         Task AddRangeAsync(List<T> t);
-        Task<int> CountAsync();
-        Task<T> FindAsync(Expression<Func<T, bool>> match);
-        Task<ICollection<T>> FindAllAsync(Expression<Func<T, bool>> match);
-        Task<ICollection<T>> FindByAsync(Expression<Func<T, bool>> predicate);
+        Task<int> CountAsync(Expression<Func<T, bool>> predicate = null);
+        Task<T> FindOnlyAsync(Expression<Func<T, bool>> match, params Expression<Func<T, object>>[] includes);
+        Task<ICollection<T>> FindAllAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes);
         Task UpdateAsync(T t, object key);
         void Delete(T entity);
-        
-        T Get(int id);
-        T Find(Expression<Func<T, bool>> match);
-        ICollection<T> FindAll(Expression<Func<T, bool>> match);
-        IQueryable<T> FindBy(Expression<Func<T, bool>> predicate);
-        IQueryable<T> GetAll();
-        IQueryable<T> GetAllIncluding(params Expression<Func<T, object>>[] includeProperties);
-        T FirstOrDefault(Expression<Func<T, bool>> predicate);
-        void Update(T t);
     }
 }

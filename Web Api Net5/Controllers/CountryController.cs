@@ -31,7 +31,7 @@ namespace Web_Api_Net5.Controllers
         {
             try
             {
-                var countries = await _uow.Countries.GetAllAsync();
+                var countries = await _uow.Countries.GetAllAsync(c => c.Hotels);
                 var response = _mapper.Map<IList<CountryDTO>>(countries);
                 return Ok(response);
             }
@@ -48,7 +48,7 @@ namespace Web_Api_Net5.Controllers
         {
             try
             {
-                var country = await _uow.Countries.GetAsync(id);
+                var country = await _uow.Countries.FindOnlyAsync(c => c.Id == id, c => c.Hotels);
                 return country is not null
                     ? Ok(_mapper.Map<CountryDTO>(country)) 
                     : NotFound();
@@ -60,6 +60,22 @@ namespace Web_Api_Net5.Controllers
             }
 
 
+        }
+        [HttpGet("/cu")]
+        public async Task<ActionResult<List<Country>>> Test()
+        {
+            try
+            {
+                var countries = await _uow.Countries.FindAllAsync(c => c.Name == "Cuba" && c.Id == 2);
+                return countries is not null
+                    ? Ok(_mapper.Map<IList<CountryDTO>>(countries))
+                    : NotFound();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }
