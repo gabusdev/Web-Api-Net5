@@ -27,7 +27,7 @@ namespace Web_Api_Net5.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Country>>> GetCountries()
+        public async Task<ActionResult<List<CountryDTO>>> GetCountries()
         {
             try
             {
@@ -44,7 +44,7 @@ namespace Web_Api_Net5.Controllers
             
         }
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<List<Country>>> GetCountry(int id)
+        public async Task<ActionResult<CountryDTO>> GetCountry(int id)
         {
             try
             {
