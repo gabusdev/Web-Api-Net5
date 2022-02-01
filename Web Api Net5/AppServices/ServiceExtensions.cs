@@ -8,6 +8,8 @@ using Web_Api_Net5.Repository;
 using Web_Api_Net5.Utils;
 using Microsoft.AspNetCore.Builder;
 using AppServices.Jwt;
+using Web_Api_Net5.Services;
+using Web_Api_Net5.Services.Impl;
 
 namespace Web_Api_Net5.AppServices
 {
@@ -25,6 +27,7 @@ namespace Web_Api_Net5.AppServices
             services.AddControllers();
             services.ConfigureSwagger(conf);
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IAuthManager, AuthManager>();
             
             /** For Handling Reference Loops Calls when serializing
             
@@ -40,6 +43,7 @@ namespace Web_Api_Net5.AppServices
             app.UseMyCors();
             app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {

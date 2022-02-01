@@ -9,14 +9,12 @@ namespace AppServices.Jwt
 {
     public static class JwtExtension
     {
-        public static void ConfigureJwt(this IServiceCollection services, IConfiguration config, bool encrypt=false, bool enviroment = false)
+        public static void ConfigureJwt(this IServiceCollection services, IConfiguration config, bool encrypt=false)
         {
             var jwtSettings = config.GetSection("Jwt");
             // Procure add key and secret in Enviroment for security
-            var key = enviroment
-                ? Environment.GetEnvironmentVariable("JwtKey")
-                : jwtSettings.GetValue<string>("Key");
-            
+            var key = Environment.GetEnvironmentVariable("JwtKey") 
+                ?? jwtSettings.GetValue<string>("Key");
             var tokenParams = new TokenValidationParameters
             {
                 ValidateIssuer = true,
@@ -30,9 +28,8 @@ namespace AppServices.Jwt
             };
             if (encrypt)
             {
-                var secret = enviroment
-                    ? Environment.GetEnvironmentVariable("JwtSecret")
-                    : jwtSettings.GetValue<string>("Secret");
+                var secret = Environment.GetEnvironmentVariable("JwtSecret")
+                    ?? jwtSettings.GetValue<string>("Secret");
                 tokenParams.TokenDecryptionKey =
                     new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
             }
