@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace DataStoreEF.Migrations
+namespace DataEF.Migrations
 {
     public partial class bien : Migration
     {

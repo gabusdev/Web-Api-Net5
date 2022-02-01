@@ -1,14 +1,15 @@
 ﻿using Core.Models;
-using DataStoreEF.Repository;
+using DataEF.Repository;
 using System;
 using System.Threading.Tasks;
 
-namespace DataStoreEF.UnitOfWork
+namespace DataEF.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
         public IGenericRepository<Hotel> Hotels { get; set; }
         public IGenericRepository<Country> Countries { get; set; }
+        
         private readonly CoreDbContext _context;
         private bool disposed = false;
 

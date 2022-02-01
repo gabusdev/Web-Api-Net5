@@ -1,8 +1,8 @@
-﻿using CustomExceptions;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Services.Exceptions;
 using System;
 using System.Threading.Tasks;
 
@@ -12,7 +12,7 @@ namespace APICore.API.Middlewares
     {
         private readonly RequestDelegate _next;
 
-        public ErrorWrappingMiddleware(RequestDelegate next, IStringLocalizer<ErrorWrappingMiddleware> localizer)
+        public ErrorWrappingMiddleware(RequestDelegate next)
         {
             _next = next;
             Message = "";

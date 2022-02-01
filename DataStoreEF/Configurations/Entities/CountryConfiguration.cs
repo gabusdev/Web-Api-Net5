@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace DataStoreEF.Configurations.Entities
+namespace DataEF.Configurations.Entities
 {
     internal class CountryConfiguration : IEntityTypeConfiguration<Country>
     {

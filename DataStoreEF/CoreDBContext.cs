@@ -1,9 +1,9 @@
 ﻿using Core.Models;
-using DataStoreEF.Configurations.Entities;
+using DataEF.Configurations.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataStoreEF
+namespace DataEF
 {
     public class CoreDbContext: IdentityDbContext<User>
     {

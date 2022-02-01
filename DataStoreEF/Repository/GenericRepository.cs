@@ -5,7 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace DataStoreEF.Repository
+namespace DataEF.Repository
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
