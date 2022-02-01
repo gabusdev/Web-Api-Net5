@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Web_Api_Net5.Models;
 using Web_Api_Net5.Repository;
+using Web_Api_Net5.Services;
+using Web_Api_Net5.Services.Impl;
 
 namespace Web_Api_Net5.Controllers
 {
@@ -20,14 +22,17 @@ namespace Web_Api_Net5.Controllers
         private readonly ILogger<AccountController> _logger;
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
+        private readonly IAuthManager _authManager;
 
         public AccountController(UserManager<User> userManager,
             ILogger<AccountController> logger,
-            IMapper mapper)
+            IMapper mapper,
+            IAuthManager authManager)
         {
             _logger = logger;
             _mapper = mapper;
             _userManager = userManager;
+            _authManager = authManager;
         }
 
         [HttpPost("register")]
@@ -58,25 +63,25 @@ namespace Web_Api_Net5.Controllers
                 return Problem($"Something went wrong at {nameof(Register)}", statusCode: StatusCodes.Status500InternalServerError);
             }
         }
-        //[HttpPost("login")]
-        //public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO)
-        //{
-        //    _logger.LogInformation($"Login Attemp for {loginDTO.Email}");
-        //    if (!ModelState.IsValid)
-        //        return BadRequest(ModelState);
-        //    try
-        //    {
-        //        var result = await _sigInManager.PasswordSignInAsync(loginDTO.Email, loginDTO.Password, false, false);
-        //        if (!result.Succeeded)
-        //            return Unauthorized("Wrong credentials");
-        //        return Accepted();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, $"Something went wrong at {nameof(Login)}");
-        //        return Problem($"Something went wrong at {nameof(Login)}", statusCode: StatusCodes.Status500InternalServerError);
-        //    }
-        //}
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO)
+        {
+            _logger.LogInformation($"Login Attemp for {loginDTO.Email}");
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            try
+            {
+                var (user, token, refreshToken) = await _authManager.LoginAsync(loginDTO);
+                if (user is null)
+                    return Unauthorized("Something went wrong");
+                return Accepted(new { Token = token, Refresh = refreshToken });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something went wrong at {nameof(Login)}");
+                return Problem($"Something went wrong at {nameof(Login)}", statusCode: StatusCodes.Status500InternalServerError);
+            }
+        }
 
     }
 }

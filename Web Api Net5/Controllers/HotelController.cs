@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Core.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -44,6 +45,7 @@ namespace Web_Api_Net5.Controllers
             
             
         }
+        [Authorize]
         [HttpGet("{id:int}")]
         [ProducesResponseType(typeof(HotelDTO), 200)]
         [ProducesResponseType(404)]

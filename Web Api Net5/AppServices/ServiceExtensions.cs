@@ -25,7 +25,7 @@ namespace Web_Api_Net5.AppServices
             services.ConfigureJwt(conf);
             services.ConfigureIdentity();
             services.AddControllers();
-            services.ConfigureSwagger(conf);
+            services.ConfigureSwagger(conf, true);
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IAuthManager, AuthManager>();
             
@@ -49,6 +49,8 @@ namespace Web_Api_Net5.AppServices
             {
                 endpoints.MapControllers();
             });
+            
+
         }
     }
 }

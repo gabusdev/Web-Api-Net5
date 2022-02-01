@@ -45,7 +45,7 @@ namespace Web_Api_Net5.Services.Impl
                 ?? _configuration.GetSection("Jwt").GetValue<string>("Key");
             var secret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
 
-            return new SigningCredentials(secret, SecurityAlgorithms.Sha256);
+            return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
         }
         private async Task<List<Claim>> GetClaims(User user)
         {
