@@ -1,9 +1,9 @@
 ﻿using Core.Models;
-using DataStoreEF.Repository;
+using DataEF.Repository;
 using System;
 using System.Threading.Tasks;
 
-namespace DataStoreEF.UnitOfWork
+namespace DataEF.UnitOfWork
 {
     public interface IUnitOfWork : IDisposable
     {

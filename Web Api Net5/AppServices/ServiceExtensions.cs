@@ -4,13 +4,14 @@ using AppServices.MySwagger;
 using AppServices.MyIdentity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Web_Api_Net5.Utils;
 using Microsoft.AspNetCore.Builder;
 using AppServices.Jwt;
-using Web_Api_Net5.Services;
-using Web_Api_Net5.Services.Impl;
-using DataStoreEF.UnitOfWork;
+using DataEF.UnitOfWork;
 using APICore.API.Middlewares;
+using AppServices.Authorization;
+using Services.Utils;
+using Services;
+using Services.Impl;
 
 namespace Web_Api_Net5.AppServices
 {
@@ -19,14 +20,15 @@ namespace Web_Api_Net5.AppServices
         public static void ConfigureServiceExtensions(this IServiceCollection services, IConfiguration conf)
         {
             var conString = conf.GetConnectionString("sqlConnection");
-            services.ConfigureSqlServerContext(conString);
-            services.AddAutoMapper(typeof(MappingProfiles));
+            services.ConfigureAuthorization();
             services.ConfigureCors();
-            services.AddAuthentication();
-            services.ConfigureJwt(conf);
             services.ConfigureIdentity();
-            services.AddControllers();
+            services.ConfigureJwt(conf);
+            services.ConfigureSqlServerContext(conString);
             services.ConfigureSwagger(conf, true);
+            services.AddAuthentication();
+            services.AddAutoMapper(typeof(MappingProfiles));
+            services.AddControllers();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IAuthManager, AuthManager>();
             

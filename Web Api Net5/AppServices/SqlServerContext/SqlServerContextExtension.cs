@@ -1,4 +1,4 @@
-﻿using DataStoreEF;
+﻿using DataEF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 

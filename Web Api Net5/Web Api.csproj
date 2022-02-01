@@ -20,7 +20,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
-    <ProjectReference Include="..\DataStoreEF\DataStoreEF.csproj" />
+    <ProjectReference Include="..\DataStoreEF\DataEF.csproj" />
+    <ProjectReference Include="..\Services\Services.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
-using DataStoreEF.UnitOfWork;
-using Microsoft.AspNetCore.Authorization;
+using Common.Response;
+using DataEF.UnitOfWork;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Web_Api_Net5.Models;
 
 namespace Web_Api_Net5.Controllers
 {
@@ -61,7 +60,7 @@ namespace Web_Api_Net5.Controllers
                 return StatusCode(500, "Internal Servel Error, please try again later");
             }
         }
-        [Authorize]
+        
         [HttpPost]
         public async Task<IActionResult> CreateHotel([FromBody] CreateHotelDTO hotel)
         {

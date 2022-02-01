@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
+using Common.Response;
 using Core.Models;
-using DataStoreEF.UnitOfWork;
-using Microsoft.AspNetCore.Http;
+using DataEF.UnitOfWork;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Web_Api_Net5.Models;
 
 namespace Web_Api_Net5.Controllers
 {
