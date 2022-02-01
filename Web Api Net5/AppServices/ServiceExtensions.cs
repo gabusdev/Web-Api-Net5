@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Web_Api_Net5.Repository;
 using Web_Api_Net5.Utils;
 using Microsoft.AspNetCore.Builder;
+using AppServices.Jwt;
 
 namespace Web_Api_Net5.AppServices
 {
@@ -16,19 +17,13 @@ namespace Web_Api_Net5.AppServices
         {
             var conString = conf.GetConnectionString("sqlConnection");
             services.ConfigureSqlServerContext(conString);
-            
             services.AddAutoMapper(typeof(MappingProfiles));
-            
             services.ConfigureCors();
-            
             services.AddAuthentication();
-            
+            services.ConfigureJwt(conf);
             services.ConfigureIdentity();
-            
             services.AddControllers();
-            
             services.ConfigureSwagger(conf);
-            
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             
             /** For Handling Reference Loops Calls when serializing
@@ -42,15 +37,10 @@ namespace Web_Api_Net5.AppServices
         public static void UseServiceExtensions(this IApplicationBuilder app)
         {
             app.UseMySwagger();
-
             app.UseMyCors();
-            
             app.UseHttpsRedirection();
-            
             app.UseRouting();
-            
             app.UseAuthorization();
-            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

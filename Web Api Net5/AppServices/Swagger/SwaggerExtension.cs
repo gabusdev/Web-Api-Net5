@@ -67,11 +67,11 @@ namespace AppServices.MySwagger
         {
             return new SwaggerConfig
             {
-                Title = config["MySwagger:Title"] ?? "Default Title",
-                Description = config["MySwagger:Description"] ?? "Default API Demo",
-                Version = config["MySwagger:Version"] ?? "v1",
-                Contact_Name = config["MySwagger:Contact_Name"] ?? "Default Name",
-                Contact_Url = config["MySwagger:Contact_Url"] ?? "https://github.com/gabusdev"
+                Title = config["OpenApi:Title"] ?? "Default Title",
+                Description = config["OpenApi:Description"] ?? "Default API Demo",
+                Version = config["OpenApi:Version"] ?? "v1",
+                Contact_Name = config["OpenApi:Contact_Name"] ?? "Default Name",
+                Contact_Url = config["OpenApi:Contact_Url"] ?? "https://github.com/gabusdev"
             };
         }
     }
