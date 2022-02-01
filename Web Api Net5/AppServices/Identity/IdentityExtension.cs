@@ -13,7 +13,6 @@ namespace AppServices.MyIdentity
 
             builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), services);
             builder.AddEntityFrameworkStores<CoreDbContext>().AddDefaultTokenProviders();
-            
         }
     }
 }

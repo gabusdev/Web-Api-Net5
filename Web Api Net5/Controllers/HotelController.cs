@@ -1,14 +1,12 @@
 ﻿using AutoMapper;
-using Core.Models;
+using DataStoreEF.UnitOfWork;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Web_Api_Net5.Models;
-using Web_Api_Net5.Repository;
 
 namespace Web_Api_Net5.Controllers
 {
@@ -45,7 +43,6 @@ namespace Web_Api_Net5.Controllers
             
             
         }
-        [Authorize]
         [HttpGet("{id:int}")]
         [ProducesResponseType(typeof(HotelDTO), 200)]
         [ProducesResponseType(404)]
@@ -63,8 +60,16 @@ namespace Web_Api_Net5.Controllers
                 _logger.LogError(ex, $"Something went wrong on {nameof(GetHotel)}.");
                 return StatusCode(500, "Internal Servel Error, please try again later");
             }
-
-
+        }
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> CreateHotel([FromBody] CreateHotelDTO hotel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            return Ok(hotel);
         }
     }
 }

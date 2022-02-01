@@ -1,8 +1,9 @@
 ﻿using Core.Models;
+using DataStoreEF.Repository;
 using System;
 using System.Threading.Tasks;
 
-namespace Web_Api_Net5.Repository
+namespace DataStoreEF.UnitOfWork
 {
     public interface IUnitOfWork : IDisposable
     {

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace Web_Api_Net5.Repository
+namespace DataStoreEF.Repository
 {
     public interface IGenericRepository<T> where T : class
     {

@@ -1,4 +1,6 @@
-﻿using Core.Models;
+﻿using AutoMapper;
+using Core.Models;
+using CustomExceptions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -17,21 +19,40 @@ namespace Web_Api_Net5.Services.Impl
     {
         private readonly IConfiguration _configuration;
         private readonly UserManager<User> _userManager;
+        private readonly IMapper _mapper;
 
-        public AuthManager(IConfiguration configuration, UserManager<User> userManager)
+        public AuthManager(IConfiguration configuration, UserManager<User> userManager, IMapper mapper)
         {
             _configuration = configuration;
             _userManager = userManager;
+            _mapper = mapper;
         }
-        public async Task<(User user, string accessToken, string refreshToken)> LoginAsync(LoginDTO loginDto)
+        public async Task<(User user, string accessToken)> AuthenticateAsync(LoginDTO loginDto)
         {
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
             
-            return (user != null && await _userManager.CheckPasswordAsync(user, loginDto.Password))
-                 ? (user, await CreateToken(user), GetRefreshToken())
-                 : (null, null, null);
+            if (user == null)
+            {
+                throw new UserNotFoundException();
+            }
+            var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
+            if (!result)
+            {
+                throw new UnauthorizedException();
+            }
+            
+            return (user, await CreateToken(user));
         }
-        
+        public async Task<IdentityResult> RegisterAsync(RegisterDTO registerDto)
+        {
+            var user = _mapper.Map<User>(registerDto);
+            var result = await _userManager.CreateAsync(user, registerDto.Password);
+            if (result.Succeeded)
+                await _userManager.AddToRolesAsync(user, new List<string> { "User" });
+            
+            return result;
+        }
+
         private async Task<string> CreateToken(User user)
         {
             var credentials = GetSigningCredentials();
@@ -80,13 +101,6 @@ namespace Web_Api_Net5.Services.Impl
             );
             
             return new JwtSecurityTokenHandler().WriteToken(jwt);
-        }
-        private string GetRefreshToken()
-        {
-            var randomNumber = new byte[32];
-            using var rng = RandomNumberGenerator.Create();
-            rng.GetBytes(randomNumber);
-            return Convert.ToBase64String(randomNumber);
         }
     }
 }

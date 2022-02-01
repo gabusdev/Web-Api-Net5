@@ -4,12 +4,13 @@ using AppServices.MySwagger;
 using AppServices.MyIdentity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Web_Api_Net5.Repository;
 using Web_Api_Net5.Utils;
 using Microsoft.AspNetCore.Builder;
 using AppServices.Jwt;
 using Web_Api_Net5.Services;
 using Web_Api_Net5.Services.Impl;
+using DataStoreEF.UnitOfWork;
+using APICore.API.Middlewares;
 
 namespace Web_Api_Net5.AppServices
 {
@@ -40,11 +41,12 @@ namespace Web_Api_Net5.AppServices
         public static void UseServiceExtensions(this IApplicationBuilder app)
         {
             app.UseMySwagger();
-            app.UseMyCors();
+            app.UseCors();
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseMiddleware(typeof(ErrorWrappingMiddleware));
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

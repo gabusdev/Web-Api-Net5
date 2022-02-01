@@ -17,11 +17,5 @@ namespace AppServices.MyCors
             });
             //return services;
         }
-
-        public static IApplicationBuilder UseMyCors(this IApplicationBuilder app)
-        {
-            app.UseCors("MyCorsPolicy");
-            return app;
-        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Core.Models;
+using DataStoreEF.UnitOfWork;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -7,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Web_Api_Net5.Models;
-using Web_Api_Net5.Repository;
 
 namespace Web_Api_Net5.Controllers
 {

@@ -15,6 +15,7 @@ namespace AppServices.Jwt
             // Procure add key and secret in Enviroment for security
             var key = Environment.GetEnvironmentVariable("JwtKey") 
                 ?? jwtSettings.GetValue<string>("Key");
+            
             var tokenParams = new TokenValidationParameters
             {
                 ValidateIssuer = true,
