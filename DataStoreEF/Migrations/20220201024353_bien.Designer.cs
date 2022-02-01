@@ -4,14 +4,16 @@ using DataStoreEF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataStoreEF.Migrations
 {
     [DbContext(typeof(CoreDbContext))]
-    partial class HotelsContextModelSnapshot : ModelSnapshot
+    [Migration("20220201024353_bien")]
+    partial class bien
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,8 +32,8 @@ namespace DataStoreEF.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ShortName")
-                        .HasMaxLength(3)
-                        .HasColumnType("nvarchar(3)");
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar(2)");
 
                     b.HasKey("Id");
 
@@ -42,19 +44,19 @@ namespace DataStoreEF.Migrations
                         {
                             Id = 1,
                             Name = "Jamaica",
-                            ShortName = "JMC"
+                            ShortName = "JM"
                         },
                         new
                         {
                             Id = 2,
                             Name = "Cuba",
-                            ShortName = "CUB"
+                            ShortName = "CU"
                         },
                         new
                         {
                             Id = 3,
                             Name = "Bahamas",
-                            ShortName = "BAH"
+                            ShortName = "BH"
                         });
                 });
 
@@ -190,6 +192,22 @@ namespace DataStoreEF.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "2c1cfc3c-f4f8-40f4-8dce-1e3701686e40",
+                            ConcurrencyStamp = "9b476544-1341-4427-9cd8-7e45a9e216ae",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "4248c66f-1353-4edb-8610-3d7fbfbd594a",
+                            ConcurrencyStamp = "bfee3b66-e5bd-4c1a-a2a7-22cbca8c0013",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

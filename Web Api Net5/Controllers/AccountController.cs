@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Web_Api_Net5.Models;
 using Web_Api_Net5.Repository;
@@ -47,7 +48,8 @@ namespace Web_Api_Net5.Controllers
                     }
                     return BadRequest(ModelState);
                 }
-                    
+
+                await _userManager.AddToRolesAsync(user, new List<string> { "User" } );
                 return Created("",true);
             }
             catch (Exception ex)
