@@ -12,6 +12,7 @@ namespace Services.Utils
             CreateMap<Country, CountryDTO>();
             CreateMap<Hotel, HotelDTO>();
             CreateMap<RegisterDTO, User>();
+            CreateMap<CreateHotelDTO, Hotel>();
         }
     }
 }

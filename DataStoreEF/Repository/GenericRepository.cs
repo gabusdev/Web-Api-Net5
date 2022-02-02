@@ -18,24 +18,32 @@ namespace DataEF.Repository
             _db = _context.Set<T>();
         }
 
-        public Task AddAsync(T t)
+        public async Task InsertAsync(T t)
         {
-            throw new NotImplementedException();
+            await _db.AddAsync(t);
         }
 
-        public Task AddRangeAsync(List<T> t)
+        public async Task InsertRangeAsync(List<T> t)
         {
-            throw new NotImplementedException();
+            await _db.AddRangeAsync(t);
         }
 
-        public Task<int> CountAsync(Expression<Func<T, bool>> predicate = null)
+        public async Task<int> CountAsync(Expression<Func<T, bool>> predicate = null)
         {
-            throw new NotImplementedException();
+            return predicate is null
+                ? await _db.CountAsync()
+                : await _db.CountAsync(predicate);
         }
 
-        public void Delete(T entity)
+        public async void DeleteAsync(object id)
         {
-            throw new NotImplementedException();
+            var entity = await _db.FindAsync(id);
+            _db.Remove(entity);
+        }
+
+        public void DeleteRange(IEnumerable<T> entities)
+        {
+            _db.RemoveRange(entities);
         }
 
         public async Task<ICollection<T>> FindAllAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
@@ -53,7 +61,7 @@ namespace DataEF.Repository
         public async Task<ICollection<T>> GetAllAsync(params Expression<Func<T, object>>[] includes)
         {
             var query = AddIncludes(includes);
-            return await query.ToListAsync();
+            return await query.AsNoTracking().ToListAsync();
         }
 
         public async Task<T> GetAsync(object id, params Expression<Func<T, object>>[] includes)
@@ -61,9 +69,10 @@ namespace DataEF.Repository
             return await _db.FindAsync(id);
         }
 
-        public Task UpdateAsync(T t, object key)
+        public void Update(T t)
         {
-            throw new NotImplementedException();
+            _db.Attach(t);
+            _context.Entry(t).State= EntityState.Modified;
         }
 
         private IQueryable<T> AddIncludes(Expression<Func<T, object>>[] includes)

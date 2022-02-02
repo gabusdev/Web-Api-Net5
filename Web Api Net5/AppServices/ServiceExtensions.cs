@@ -20,7 +20,7 @@ namespace Web_Api_Net5.AppServices
         public static void ConfigureServiceExtensions(this IServiceCollection services, IConfiguration conf)
         {
             var conString = conf.GetConnectionString("sqlConnection");
-            services.ConfigureAuthorization();
+            services.ConfigureAuthorization(locked: true);
             services.ConfigureCors();
             services.ConfigureIdentity();
             services.ConfigureJwt(conf);

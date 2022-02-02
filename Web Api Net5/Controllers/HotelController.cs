@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Common.Response;
+using Core.Models;
 using DataEF.UnitOfWork;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -62,13 +63,19 @@ namespace Web_Api_Net5.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> CreateHotel([FromBody] CreateHotelDTO hotel)
+        public async Task<IActionResult> CreateHotel([FromBody] CreateHotelDTO hotelDto)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest(ModelState);
             }
-            return Ok(hotel);
+            
+            var hotel = _mapper.Map<Hotel>(hotelDto);
+            await _uow.Hotels.InsertAsync(hotel);
+
+            // Todo :
+            // Fix the method
+            return CreatedAtRoute(nameof(GetHotel),hotel.Id , hotel);
         }
     }
 }
