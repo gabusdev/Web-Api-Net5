@@ -1,13 +1,15 @@
 ﻿using AutoMapper;
 using BasicResponses;
 using Common.Request;
+using Common.Response;
 using Core.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Logging;
 using Services;
-using Services.Exceptions;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Web_Api_Net5.Controllers
@@ -41,11 +43,9 @@ namespace Web_Api_Net5.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(new ApiBadRequestResponse(ModelState));
 
-            var result = await _authManager.RegisterAsync(registerDTO);
-            if (!result.Succeeded)
-                return BadRequest(ModelState);
-
-            return Created(nameof(Register), "Success");
+            var user = await _authManager.RegisterAsync(registerDTO);
+            var userDto = _mapper.Map<UserDTO>(user);
+            return CreatedAtAction("", userDto);
         }
 
         [AllowAnonymous]
@@ -54,9 +54,9 @@ namespace Web_Api_Net5.Controllers
         {
             _logger.LogInformation($"Login Attemp for {loginDTO.Email}");
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return BadRequest(new ApiBadRequestResponse(ModelState));
 
-            var (user, token) = await _authManager.AuthenticateAsync(loginDTO);
+            var (_, token) = await _authManager.AuthenticateAsync(loginDTO);
 
             return Accepted(new { Token = token });
         }

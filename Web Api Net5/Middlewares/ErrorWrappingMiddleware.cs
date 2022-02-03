@@ -24,7 +24,7 @@ namespace APICore.API.Middlewares
         public async Task Invoke(HttpContext context)
         {
             Message = "";
-            CustomStatusCode = 0;
+            CustomStatusCode = 500000;
             try
             {
                 await _next.Invoke(context);

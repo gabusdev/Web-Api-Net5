@@ -8,6 +8,7 @@ using Services.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,14 +43,14 @@ namespace Services.Impl
             
             return (user, await CreateToken(user));
         }
-        public async Task<IdentityResult> RegisterAsync(RegisterDTO registerDto)
+        public async Task<User> RegisterAsync(RegisterDTO registerDto)
         {
             var user = _mapper.Map<User>(registerDto);
             var result = await _userManager.CreateAsync(user, registerDto.Password);
-            if (result.Succeeded)
-                await _userManager.AddToRolesAsync(user, new List<string> { "User" });
+            if (!result.Succeeded)
+                throw new InvalidFieldBadRequestException(result.Errors.First().Description, 400003);
             
-            return result;
+            return user;
         }
 
         private async Task<string> CreateToken(User user)

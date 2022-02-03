@@ -10,6 +10,6 @@ namespace Services
     {
         Task<(User user, string accessToken)> AuthenticateAsync(LoginDTO loginDto);
 
-        Task<IdentityResult> RegisterAsync(RegisterDTO loginDto);
+        Task<User> RegisterAsync(RegisterDTO loginDto);
     }
 }
