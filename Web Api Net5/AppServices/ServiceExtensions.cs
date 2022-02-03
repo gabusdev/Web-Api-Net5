@@ -33,7 +33,7 @@ namespace Web_Api_Net5.AppServices
             services.AddControllers();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IAuthManager, AuthManager>();
-            
+
             /** For Handling Reference Loops Calls when serializing
             
             services.AddControllers().AddNewtonsoftJson(o =>
@@ -55,7 +55,7 @@ namespace Web_Api_Net5.AppServices
             {
                 endpoints.MapControllers();
             });
-            
+
 
         }
     }

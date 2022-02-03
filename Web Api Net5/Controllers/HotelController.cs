@@ -32,21 +32,21 @@ namespace Web_Api_Net5.Controllers
         {
             var hotels = await _uow.Hotels.GetAllAsync();
             var response = _mapper.Map<IList<HotelDTO>>(hotels);
-            
+
             return Ok(response);
         }
-        
+
         [HttpGet("{id:int}", Name = "GetHotel")]
         [ProducesResponseType(typeof(HotelDTO), 200)]
         [ProducesResponseType(404)]
         public async Task<ActionResult<HotelDTO>> GetHotel(int id)
         {
             var hotel = await _uow.Hotels.GetAsync(h => h.Id == id);
-                return hotel is not null
-                    ? Ok(_mapper.Map<HotelDTO>(hotel)) 
-                    : NotFound();
+            return hotel is not null
+                ? Ok(_mapper.Map<HotelDTO>(hotel))
+                : NotFound();
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> CreateHotel([FromBody] CreateHotelDTO hotelDto)
         {
@@ -55,13 +55,13 @@ namespace Web_Api_Net5.Controllers
                 return BadRequest(ModelState);
             }
             if (!await _uow.Countries.Exists(c => c.Id == hotelDto.CountryId))
-              throw new WrongForeignKeyBadRequestException($"The Country with Id {hotelDto.CountryId} doesn't exist", 400002);
-            
+                throw new WrongForeignKeyBadRequestException($"The Country with Id {hotelDto.CountryId} doesn't exist", 400002);
+
             var hotel = _mapper.Map<Hotel>(hotelDto);
             await _uow.Hotels.InsertAsync(hotel);
             await _uow.CommitAsync();
 
-            return CreatedAtRoute("GetHotel", new { hotel.Id } , _mapper.Map<HotelDTO>(hotel));
+            return CreatedAtRoute("GetHotel", new { hotel.Id }, _mapper.Map<HotelDTO>(hotel));
         }
     }
 }

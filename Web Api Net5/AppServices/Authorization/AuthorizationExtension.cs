@@ -18,10 +18,12 @@ namespace AppServices.Authorization
                     opt.AddPolicy("Admin",
                         policy => policy.RequireRole("Admin"));
                 });
-            } else {
+            }
+            else
+            {
                 services.AddAuthorization();
             }
-            
+
         }
     }
 }

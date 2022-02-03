@@ -31,7 +31,7 @@ namespace Web_Api_Net5.Controllers
         {
             try
             {
-                var countries = await _uow.Countries.GetAllOrderedAsync(c=> c.Id, false, c=> c.Hotels);
+                var countries = await _uow.Countries.GetAllOrderedAsync(c => c.Id, false, c => c.Hotels);
                 var response = _mapper.Map<IList<CountryDTO>>(countries);
                 return Ok(response);
             }
@@ -40,8 +40,8 @@ namespace Web_Api_Net5.Controllers
                 _logger.LogError(ex, $"Something went wrong on {nameof(GetCountries)}.");
                 return StatusCode(500, "Internal Servel Error, please try again later");
             }
-            
-            
+
+
         }
         [HttpGet("{id:int}")]
         public async Task<ActionResult<CountryDTO>> GetCountry(int id)
@@ -50,7 +50,7 @@ namespace Web_Api_Net5.Controllers
             {
                 var country = await _uow.Countries.GetAsync(c => c.Id == id, c => c.Hotels);
                 return country is not null
-                    ? Ok(_mapper.Map<CountryDTO>(country)) 
+                    ? Ok(_mapper.Map<CountryDTO>(country))
                     : NotFound();
             }
             catch (Exception ex)

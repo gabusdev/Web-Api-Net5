@@ -34,7 +34,7 @@ namespace Services.Impl
             
             if (user == null)
             {
-                throw new UserNotFoundException("The User with such Mail doesn't exist");
+   throw new UserNotFoundException("The User with such Mail doesn't exist");
             }
             var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
             if (!result)
@@ -44,17 +44,17 @@ namespace Services.Impl
             
             return (user, await CreateToken(user));
         }
-        public async Task<User> RegisterAsync(RegisterDTO registerDto)
+c async Task<User> RegisterAsync(RegisterDTO registerDto)
         {
             var user = _mapper.Map<User>(registerDto);
             
             var result = await _userManager.CreateAsync(user, registerDto.Password);
             if (!result.Succeeded)
-                throw new InvalidFieldBadRequestException(result.Errors.First().Description, 400003);
+   throw new InvalidFieldBadRequestException(result.Errors.First().Description, 400003);
             
             result = await _userManager.AddToRoleAsync(user, Enum.GetName(RoleEnum.User));
             if (!result.Succeeded)
-                throw new InvalidFieldBadRequestException(result.Errors.First().Description, 400004);
+   throw new InvalidFieldBadRequestException(result.Errors.First().Description, 400004);
 
             return user;
         }
@@ -66,7 +66,7 @@ namespace Services.Impl
             
             return GetToken(credentials, claims);
         }
-        private SigningCredentials GetSigningCredentials()
+te SigningCredentials GetSigningCredentials()
         {
             var key = Environment.GetEnvironmentVariable("JwtKey")
                 ?? _configuration.GetSection("Jwt").GetValue<string>("Key");
@@ -81,7 +81,7 @@ namespace Services.Impl
             
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Email, user.Email, ClaimValueTypes.Email, issuer),
+   new Claim(ClaimTypes.Email, user.Email, ClaimValueTypes.Email, issuer),
                 new Claim(ClaimTypes.AuthenticationMethod, "bearer", ClaimValueTypes.String, issuer),
                 new Claim(ClaimTypes.NameIdentifier, user.UserName, ClaimValueTypes.String, issuer),
                 new Claim(ClaimTypes.UserData, user.Id, ClaimValueTypes.String, issuer)
@@ -93,13 +93,13 @@ namespace Services.Impl
             
             return claims;
         }
-        private string GetToken(SigningCredentials credentials, IEnumerable<Claim> claims, bool encrypt = false)
+te string GetToken(SigningCredentials credentials, IEnumerable<Claim> claims, bool encrypt = false)
         {
             var issuer = _configuration.GetSection("Jwt")["Issuer"];
             
             var jwt = new JwtSecurityToken(
                 issuer: issuer,
-                audience: _configuration.GetSection("Jwt")["Audience"],
+   audience: _configuration.GetSection("Jwt")["Audience"],
                 claims: claims,
                 notBefore: DateTime.UtcNow,
                 expires: DateTime.UtcNow.AddMinutes(int.Parse(_configuration.GetSection("Jwt")["ExpireTime"])),
@@ -108,5 +108,5 @@ namespace Services.Impl
             
             return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
-    }
+
 }
