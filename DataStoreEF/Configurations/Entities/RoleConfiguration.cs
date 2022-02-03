@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Core.Entities.Enums;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace DataEF.Configurations.Entities
 {
@@ -11,13 +13,13 @@ namespace DataEF.Configurations.Entities
             builder.HasData(
                 new IdentityRole
                 {
-                    Name = "Admin",
-                    NormalizedName = "ADMIN"
+                    Name = Enum.GetName(RoleEnum.Admin),
+                    NormalizedName = Enum.GetName(RoleEnum.Admin).ToUpper()
                 },
                 new IdentityRole
                 {
-                    Name = "User",
-                    NormalizedName = "USER"
+                    Name = Enum.GetName(RoleEnum.User),
+                    NormalizedName = Enum.GetName(RoleEnum.User).ToUpper()
                 }
             );
         }

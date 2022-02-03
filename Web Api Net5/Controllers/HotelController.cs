@@ -55,13 +55,13 @@ namespace Web_Api_Net5.Controllers
                 return BadRequest(ModelState);
             }
             if (!await _uow.Countries.Exists(c => c.Id == hotelDto.CountryId))
-                throw new WrongForeignKeyBadRequestException("The Hotel with Id passed doesn't exist", 400002);
+              throw new WrongForeignKeyBadRequestException($"The Country with Id {hotelDto.CountryId} doesn't exist", 400002);
             
             var hotel = _mapper.Map<Hotel>(hotelDto);
             await _uow.Hotels.InsertAsync(hotel);
             await _uow.CommitAsync();
 
-            return CreatedAtRoute("GetHotel", new { Id = hotel.Id } , _mapper.Map<HotelDTO>(hotel));
+            return CreatedAtRoute("GetHotel", new { hotel.Id } , _mapper.Map<HotelDTO>(hotel));
         }
     }
 }

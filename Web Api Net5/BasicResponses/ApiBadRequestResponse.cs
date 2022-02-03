@@ -8,18 +8,17 @@ namespace BasicResponses
     public class ApiBadRequestResponse : ApiResponse
 
     {
-        public ApiBadRequestResponse(ModelStateDictionary modelState)
+        public ApiBadRequestResponse(FluentValidation.Results.ValidationResult results)
             : base(400)
         {
-            if (modelState.IsValid)
+            if (results.IsValid)
             {
-                throw new ArgumentException("ModelState must be invalid", nameof(modelState));
+                throw new ArgumentException("ModelState must be invalid", nameof(results));
             }
 
-            Errors = modelState.SelectMany(x => x.Value.Errors)
-                .Select(x => x.ErrorMessage).ToArray();
+            Errors = results.Errors.Select(e => $"Property { e.PropertyName} is not valid. { e.ErrorMessage }");
         }
 
-        public IEnumerable<string> Errors { get; }
+        public IEnumerable<string> Errors { get; set; }
     }
 }

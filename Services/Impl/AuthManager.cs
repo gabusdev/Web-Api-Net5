@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Common.Request;
+using Core.Entities.Enums;
 using Core.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -46,10 +47,15 @@ namespace Services.Impl
         public async Task<User> RegisterAsync(RegisterDTO registerDto)
         {
             var user = _mapper.Map<User>(registerDto);
+            
             var result = await _userManager.CreateAsync(user, registerDto.Password);
             if (!result.Succeeded)
                 throw new InvalidFieldBadRequestException(result.Errors.First().Description, 400003);
             
+            result = await _userManager.AddToRoleAsync(user, Enum.GetName(RoleEnum.User));
+            if (!result.Succeeded)
+                throw new InvalidFieldBadRequestException(result.Errors.First().Description, 400004);
+
             return user;
         }
 

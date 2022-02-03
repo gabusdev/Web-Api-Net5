@@ -12,6 +12,7 @@ using AppServices.Authorization;
 using Services.Utils;
 using Services;
 using Services.Impl;
+using AppServices.FluentValidation;
 
 namespace Web_Api_Net5.AppServices
 {
@@ -22,6 +23,7 @@ namespace Web_Api_Net5.AppServices
             var conString = conf.GetConnectionString("sqlConnection");
             services.ConfigureAuthorization();
             services.ConfigureCors();
+            services.ConfigureFluentValidation();
             services.ConfigureIdentity();
             services.ConfigureJwt(conf);
             services.ConfigureSqlServerContext(conString);

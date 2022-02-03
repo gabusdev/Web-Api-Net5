@@ -2,13 +2,16 @@
 using BasicResponses;
 using Common.Request;
 using Common.Response;
+using Core.Entities.Enums;
 using Core.Models;
+using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Logging;
 using Services;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,18 +24,22 @@ namespace Web_Api_Net5.Controllers
         //private readonly IUnitOfWork _uow;
         private readonly ILogger<UserController> _logger;
         private readonly IMapper _mapper;
-        private readonly UserManager<User> _userManager;
         private readonly IAuthManager _authManager;
+        private readonly IValidator<LoginDTO> _loginValidator;
+        private readonly IValidator<RegisterDTO> _registerValidator;
 
-        public UserController(UserManager<User> userManager,
+        public UserController(
             ILogger<UserController> logger,
             IMapper mapper,
-            IAuthManager authManager)
+            IAuthManager authManager,
+            IValidator<LoginDTO> loginValidator,
+            IValidator<RegisterDTO> registerValidator)
         {
             _logger = logger;
             _mapper = mapper;
-            _userManager = userManager;
             _authManager = authManager;
+            _loginValidator = loginValidator;
+            _registerValidator = registerValidator;
         }
 
         [AllowAnonymous]
@@ -40,8 +47,9 @@ namespace Web_Api_Net5.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterDTO registerDTO)
         {
             _logger.LogInformation($"Registration Attemp for {registerDTO.Email}");
-            if (!ModelState.IsValid)
-                return BadRequest(new ApiBadRequestResponse(ModelState));
+            var result = _registerValidator.Validate(registerDTO);
+            if (!result.IsValid)
+                return BadRequest(new ApiBadRequestResponse(result));
 
             var user = await _authManager.RegisterAsync(registerDTO);
             var userDto = _mapper.Map<UserDTO>(user);
@@ -53,12 +61,19 @@ namespace Web_Api_Net5.Controllers
         public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO)
         {
             _logger.LogInformation($"Login Attemp for {loginDTO.Email}");
-            if (!ModelState.IsValid)
-                return BadRequest(new ApiBadRequestResponse(ModelState));
+            var result = _loginValidator.Validate(loginDTO);
+            if (!result.IsValid)
+                return BadRequest(new ApiBadRequestResponse(result));
 
             var (_, token) = await _authManager.AuthenticateAsync(loginDTO);
 
             return Accepted(new { Token = token });
+        }
+
+        [HttpGet("test")]
+        public string Test()
+        {
+            return nameof(RoleEnum.Admin);
         }
 
     }
