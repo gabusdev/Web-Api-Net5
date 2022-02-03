@@ -4,6 +4,7 @@ using Core.Models;
 using DataEF.UnitOfWork;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Services.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -29,37 +30,21 @@ namespace Web_Api_Net5.Controllers
         [ProducesResponseType(typeof(List<HotelDTO>), 200)]
         public async Task<ActionResult<List<HotelDTO>>> GetHotels()
         {
-            try
-            {
-                var hotels = await _uow.Hotels.GetAllAsync();
-                var response = _mapper.Map<IList<HotelDTO>>(hotels);
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Something went wrong on {nameof(GetHotels)}.");
-                return StatusCode(500, "Internal Servel Error, please try again later");
-            }
+            var hotels = await _uow.Hotels.GetAllAsync();
+            var response = _mapper.Map<IList<HotelDTO>>(hotels);
             
-            
+            return Ok(response);
         }
-        [HttpGet("{id:int}")]
+        
+        [HttpGet("{id:int}", Name = "GetHotel")]
         [ProducesResponseType(typeof(HotelDTO), 200)]
         [ProducesResponseType(404)]
         public async Task<ActionResult<HotelDTO>> GetHotel(int id)
         {
-            try
-            {
-                var hotel = await _uow.Hotels.GetAsync(id);
+            var hotel = await _uow.Hotels.GetAsync(h => h.Id == id);
                 return hotel is not null
                     ? Ok(_mapper.Map<HotelDTO>(hotel)) 
                     : NotFound();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Something went wrong on {nameof(GetHotel)}.");
-                return StatusCode(500, "Internal Servel Error, please try again later");
-            }
         }
         
         [HttpPost]
@@ -69,13 +54,14 @@ namespace Web_Api_Net5.Controllers
             {
                 return BadRequest(ModelState);
             }
+            if (!await _uow.Countries.Exists(c => c.Id == hotelDto.CountryId))
+                throw new WrongForeignKeyBadRequestException("The Hotel with Id passed doesn't exist", 400002);
             
             var hotel = _mapper.Map<Hotel>(hotelDto);
             await _uow.Hotels.InsertAsync(hotel);
+            await _uow.CommitAsync();
 
-            // Todo :
-            // Fix the method
-            return CreatedAtRoute(nameof(GetHotel),hotel.Id , hotel);
+            return CreatedAtRoute("GetHotel", new { Id = hotel.Id } , _mapper.Map<HotelDTO>(hotel));
         }
     }
 }

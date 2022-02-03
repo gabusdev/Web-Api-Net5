@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BasicResponses;
 using Common.Request;
 using Core.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -38,17 +39,11 @@ namespace Web_Api_Net5.Controllers
         {
             _logger.LogInformation($"Registration Attemp for {registerDTO.Email}");
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return BadRequest(new ApiBadRequestResponse(ModelState));
 
             var result = await _authManager.RegisterAsync(registerDTO);
             if (!result.Succeeded)
-            {
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(error.Code, error.Description);
-                }
                 return BadRequest(ModelState);
-            }
 
             return Created(nameof(Register), "Success");
         }

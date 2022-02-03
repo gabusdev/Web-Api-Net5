@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq.Expressions;
 
 namespace Web_Api_Net5.Controllers
 {
@@ -30,7 +31,7 @@ namespace Web_Api_Net5.Controllers
         {
             try
             {
-                var countries = await _uow.Countries.GetAllAsync(c => c.Hotels);
+                var countries = await _uow.Countries.GetAllOrderedAsync(c=> c.Id, false, c=> c.Hotels);
                 var response = _mapper.Map<IList<CountryDTO>>(countries);
                 return Ok(response);
             }
@@ -47,7 +48,7 @@ namespace Web_Api_Net5.Controllers
         {
             try
             {
-                var country = await _uow.Countries.FindOnlyAsync(c => c.Id == id, c => c.Hotels);
+                var country = await _uow.Countries.GetAsync(c => c.Id == id, c => c.Hotels);
                 return country is not null
                     ? Ok(_mapper.Map<CountryDTO>(country)) 
                     : NotFound();
@@ -65,7 +66,7 @@ namespace Web_Api_Net5.Controllers
         {
             try
             {
-                var countries = await _uow.Countries.FindAllAsync(c => c.Name == "Cuba" && c.Id == 2);
+                var countries = await _uow.Countries.GetAllAsync(c => c.Name == "Cuba" && c.Id == 2);
                 return countries is not null
                     ? Ok(_mapper.Map<IList<CountryDTO>>(countries))
                     : NotFound();

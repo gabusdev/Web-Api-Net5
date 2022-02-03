@@ -45,29 +45,60 @@ namespace DataEF.Repository
         {
             _db.RemoveRange(entities);
         }
-
-        public async Task<ICollection<T>> FindAllAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
-        {
-            var query = AddIncludes(includes);
-            return await query.Where(predicate).ToListAsync();
-        }
-
-        public async Task<T> FindOnlyAsync(Expression<Func<T, bool>> match, params Expression<Func<T, object>>[] includes)
-        {
-            var query = AddIncludes(includes);
-            return await query.SingleOrDefaultAsync(match);
-        }
-
+        
         public async Task<ICollection<T>> GetAllAsync(params Expression<Func<T, object>>[] includes)
         {
-            var query = AddIncludes(includes);
+            return await GetAllOrderedAsync(null, null, false, includes);
+        }
+
+        public async Task<ICollection<T>> GetAllAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
+        {
+            return await GetAllOrderedAsync(predicate, null, false, includes);
+        }
+
+        public async Task<ICollection<T>> GetAllOrderedAsync(Expression<Func<T, object>> orderBy, bool desc, params Expression<Func<T, object>>[] includes)
+        {
+            return await GetAllOrderedAsync(null, orderBy, desc, includes);
+        }
+
+        public async Task<ICollection<T>> GetAllOrderedAsync(Expression<Func<T, bool>> predicate,
+            Expression<Func<T, object>> orderBy, bool desc,
+            params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = _db;
+
+            if (predicate is not null)
+                query = query.Where(predicate);
+
+            query = AddIncludes(query, includes);
+
+            if (orderBy is not null)
+                query = !desc
+                    ? query.OrderBy(orderBy)
+                    : query.OrderByDescending(orderBy);
+
             return await query.AsNoTracking().ToListAsync();
         }
 
-        public async Task<T> GetAsync(object id, params Expression<Func<T, object>>[] includes)
+        public async Task<T> GetAsync(Expression<Func<T, bool>> match, params Expression<Func<T, object>>[] includes)
         {
-            return await _db.FindAsync(id);
+            IQueryable<T> query = _db;
+
+            query = AddIncludes(query, includes);
+            
+            return await query.SingleOrDefaultAsync(match);
         }
+
+        //public async Task<ICollection<T>> GetAllAsync(params Expression<Func<T, object>>[] includes)
+        //{
+        //    var query = AddIncludes(includes);
+        //    return await query.AsNoTracking().ToListAsync();
+        //}
+
+        //public async Task<T> GetAsync(object id, params Expression<Func<T, object>>[] includes)
+        //{
+        //    return await _db.FindAsync(id);
+        //}
 
         public void Update(T t)
         {
@@ -75,15 +106,19 @@ namespace DataEF.Repository
             _context.Entry(t).State= EntityState.Modified;
         }
 
-        private IQueryable<T> AddIncludes(Expression<Func<T, object>>[] includes)
+        private IQueryable<T> AddIncludes(IQueryable<T> query, Expression<Func<T, object>>[] includes)
         {
-            IQueryable<T> query = _db;
             foreach (var include in includes)
             {
                 query = query.Include(include);
             }
             query = query.AsSplitQuery();
             return query;
+        }
+
+        public async Task<bool> Exists(Expression<Func<T, bool>> match)
+        {
+            return (await _db.FirstOrDefaultAsync(match) is not null);
         }
     }
 }

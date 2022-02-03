@@ -13,6 +13,7 @@ namespace Services.Utils
             CreateMap<Hotel, HotelDTO>();
             CreateMap<RegisterDTO, User>();
             CreateMap<CreateHotelDTO, Hotel>();
+            CreateMap<Hotel, HotelDTO>();
         }
     }
 }
