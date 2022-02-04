@@ -22,6 +22,9 @@ namespace DataEF.Repository
         Task<ICollection<T>> GetAllOrderedAsync(Expression<Func<T, bool>> predicate,
             Expression<Func<T, object>> orderBy, bool desc,
             params Expression<Func<T, object>>[] includes);
+        IQueryable<T> GetAllQuery(Expression<Func<T, bool>> predicate,
+            Expression<Func<T, object>> orderBy, bool desc,
+            params Expression<Func<T, object>>[] includes);
         void Update(T t);
         void DeleteAsync(object id);
         void DeleteRange(IEnumerable<T> entities);

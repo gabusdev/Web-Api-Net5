@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BasicResponses;
+using Common.DTO.Request;
 using Common.Response;
 using Core.Entities.Enums;
 using Core.Models;
@@ -11,19 +12,20 @@ using Services.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace Web_Api_Net5.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HotelCOntroller : ControllerBase
+    public class HotelController : ControllerBase
     {
         private readonly IUnitOfWork _uow;
         private readonly ILogger<CountryController> _logger;
         private readonly IMapper _mapper;
         private readonly IValidator<CreateHotelDTO> _hotelValidator;
 
-        public HotelCOntroller(IUnitOfWork uow, ILogger<CountryController> logger, IMapper mapper, IValidator<CreateHotelDTO> hotelValidator)
+        public HotelController(IUnitOfWork uow, ILogger<CountryController> logger, IMapper mapper, IValidator<CreateHotelDTO> hotelValidator)
         {
             _uow = uow;
             _logger = logger;
@@ -33,12 +35,12 @@ namespace Web_Api_Net5.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(List<HotelDTO>), 200)]
-        public async Task<ActionResult<List<HotelDTO>>> GetHotels()
+        public async Task<ActionResult<List<HotelDTO>>> GetHotels([FromQuery] RequestParams reqParams)
         {
             var hotels = await _uow.Hotels.GetAllAsync();
             var response = _mapper.Map<IList<HotelDTO>>(hotels);
 
-            return Ok(response);
+            return Ok(new ApiOkResponse(response));
         }
 
         [HttpGet("{id:int}", Name = "GetHotel")]

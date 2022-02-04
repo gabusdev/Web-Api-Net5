@@ -10,8 +10,5 @@ namespace AppServices.FluentValidation
         {
             services.AddValidatorsFromAssemblyContaining<RegisterDTOValidator>();
         }
-
-
-        
     }
 }

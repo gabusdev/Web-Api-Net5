@@ -65,17 +65,7 @@ namespace DataEF.Repository
             Expression<Func<T, object>> orderBy, bool desc,
             params Expression<Func<T, object>>[] includes)
         {
-            IQueryable<T> query = _db;
-
-            if (predicate is not null)
-                query = query.Where(predicate);
-
-            query = AddIncludes(query, includes);
-
-            if (orderBy is not null)
-                query = !desc
-                    ? query.OrderBy(orderBy)
-                    : query.OrderByDescending(orderBy);
+            IQueryable<T> query = GetAllQuery(predicate, orderBy, desc, includes);
 
             return await query.AsNoTracking().ToListAsync();
         }
@@ -119,6 +109,23 @@ namespace DataEF.Repository
         public async Task<bool> Exists(Expression<Func<T, bool>> match)
         {
             return (await _db.FirstOrDefaultAsync(match) is not null);
+        }
+
+        public IQueryable<T> GetAllQuery(Expression<Func<T, bool>> predicate, Expression<Func<T, object>> orderBy, bool desc, params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = _db;
+
+            if (predicate is not null)
+                query = query.Where(predicate);
+
+            query = AddIncludes(query, includes);
+
+            if (orderBy is not null)
+                query = !desc
+                    ? query.OrderBy(orderBy)
+                    : query.OrderByDescending(orderBy);
+
+            return query;
         }
     }
 }

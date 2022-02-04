@@ -13,6 +13,7 @@ using Services.Utils;
 using Services;
 using Services.Impl;
 using AppServices.FluentValidation;
+using AppServices.ApiVersioning;
 
 namespace Web_Api_Net5.AppServices
 {
@@ -21,6 +22,7 @@ namespace Web_Api_Net5.AppServices
         public static void ConfigureServiceExtensions(this IServiceCollection services, IConfiguration conf)
         {
             var conString = conf.GetConnectionString("sqlConnection");
+            services.ConfigureApiVersioning();
             services.ConfigureAuthorization();
             services.ConfigureCors();
             services.ConfigureFluentValidation();
