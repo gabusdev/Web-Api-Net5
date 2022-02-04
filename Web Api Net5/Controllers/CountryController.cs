@@ -61,21 +61,5 @@ namespace Web_Api_Net5.Controllers
 
 
         }
-        [HttpGet("/cu")]
-        public async Task<ActionResult<List<Country>>> Test()
-        {
-            try
-            {
-                var countries = await _uow.Countries.GetAllAsync(c => c.Name == "Cuba" && c.Id == 2);
-                return countries is not null
-                    ? Ok(_mapper.Map<IList<CountryDTO>>(countries))
-                    : NotFound();
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
     }
 }

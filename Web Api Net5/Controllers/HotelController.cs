@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using BasicResponses;
 using Common.Response;
+using Core.Entities.Enums;
 using Core.Models;
 using DataEF.UnitOfWork;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Services.Exceptions;
@@ -18,12 +21,14 @@ namespace Web_Api_Net5.Controllers
         private readonly IUnitOfWork _uow;
         private readonly ILogger<CountryController> _logger;
         private readonly IMapper _mapper;
+        private readonly IValidator<CreateHotelDTO> _hotelValidator;
 
-        public HotelCOntroller(IUnitOfWork uow, ILogger<CountryController> logger, IMapper mapper)
+        public HotelCOntroller(IUnitOfWork uow, ILogger<CountryController> logger, IMapper mapper, IValidator<CreateHotelDTO> hotelValidator)
         {
             _uow = uow;
             _logger = logger;
             _mapper = mapper;
+            _hotelValidator = hotelValidator;
         }
 
         [HttpGet]
@@ -50,18 +55,48 @@ namespace Web_Api_Net5.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateHotel([FromBody] CreateHotelDTO hotelDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            var result = _hotelValidator.Validate(hotelDto);
+            if (!result.IsValid)
+                return BadRequest(new ApiBadRequestResponse(result));
+
             if (!await _uow.Countries.Exists(c => c.Id == hotelDto.CountryId))
-                throw new WrongForeignKeyBadRequestException($"The Country with Id {hotelDto.CountryId} doesn't exist", 400002);
+                throw new WrongForeignKeyBadRequestException($"The Country with Id {hotelDto.CountryId} doesn't exist", (int)CustomCodeEnum.NoCountryId);
 
             var hotel = _mapper.Map<Hotel>(hotelDto);
             await _uow.Hotels.InsertAsync(hotel);
             await _uow.CommitAsync();
 
-            return CreatedAtRoute("GetHotel", new { hotel.Id }, _mapper.Map<HotelDTO>(hotel));
+            return CreatedAtRoute("GetHotel", new { id = hotel.Id }, _mapper.Map<HotelDTO>(hotel));
+        }
+
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> UpdateHotel(int id, [FromBody] CreateHotelDTO hotelDto)
+        {
+            var result = _hotelValidator.Validate(hotelDto);
+            if (!result.IsValid)
+                return BadRequest(new ApiBadRequestResponse(result));
+
+            var hotel = await _uow.Hotels.GetAsync(h => h.Id == id);
+            if (hotel == null)
+                return NotFound(new ApiNotFoundResponse($"There is not Hotel with id {id}"));
+
+            _mapper.Map(hotelDto, hotel);
+            _uow.Hotels.Update(hotel);
+            await _uow.CommitAsync();
+            return NoContent();
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteHotel(int id)
+        {
+            var hotel = await _uow.Hotels.GetAsync(h => h.Id == id);
+            if (hotel == null)
+                return NotFound(new ApiNotFoundResponse($"There is not Hotel with id {id}"));
+
+            _uow.Hotels.DeleteAsync(hotel.Id);
+            await _uow.CommitAsync();
+
+            return NoContent();
         }
     }
 }

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Core.Entities.Enums
 {
-    public enum CustomErrorCodeEnum
+    public enum CustomCodeEnum
     {
-
+        NoCountryId = 100
     }
 }
