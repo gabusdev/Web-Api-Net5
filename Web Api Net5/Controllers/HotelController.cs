@@ -44,12 +44,14 @@ namespace Web_Api_Net5.Controllers
         }
 
         [HttpGet("{id:int}", Name = "GetHotel")]
+        [ResponseCache(CacheProfileName = "60SecondsDuraion")]
         [ProducesResponseType(typeof(HotelDTO), 200)]
         [ProducesResponseType(404)]
         public async Task<ActionResult<HotelDTO>> GetHotel(int id)
         {
             var hotel = await _uow.Hotels.GetAsync(h => h.Id == id);
             return hotel is not null
+                //? Ok(new ApiOkResponse(_mapper.Map<HotelDTO>(hotel)))
                 ? Ok(_mapper.Map<HotelDTO>(hotel))
                 : NotFound();
         }

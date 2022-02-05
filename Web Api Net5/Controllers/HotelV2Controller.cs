@@ -30,6 +30,7 @@ namespace Web_Api_Net5.Controllers
         }
 
         [HttpGet]
+        [ResponseCache(Duration = 60)]
         [ProducesResponseType(typeof(List<HotelDTO>), 200)]
         public async Task<ActionResult<List<HotelDTO>>> GetHotels([FromQuery] RequestParams reqParams)
         {

@@ -56,11 +56,10 @@ namespace AppServices.MySwagger
             
         }
 
-        public static IApplicationBuilder UseMySwagger(this IApplicationBuilder app)
+        public static void UseMySwagger(this IApplicationBuilder app)
         {
             app.UseSwagger();
             app.UseSwaggerUI();
-            return app;
         }
 
         private static SwaggerConfig GetConfig(IConfiguration config)

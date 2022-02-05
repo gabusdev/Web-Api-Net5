@@ -14,6 +14,8 @@ using Services;
 using Services.Impl;
 using AppServices.FluentValidation;
 using AppServices.ApiVersioning;
+using Microsoft.AspNetCore.Mvc;
+using AppServices.Caching;
 
 namespace Web_Api_Net5.AppServices
 {
@@ -24,6 +26,7 @@ namespace Web_Api_Net5.AppServices
             var conString = conf.GetConnectionString("sqlConnection");
             services.ConfigureApiVersioning();
             services.ConfigureAuthorization();
+            services.ConfigureCaching();
             services.ConfigureCors();
             services.ConfigureFluentValidation();
             services.ConfigureIdentity();
@@ -32,9 +35,15 @@ namespace Web_Api_Net5.AppServices
             services.ConfigureSwagger(conf, true);
             services.AddAuthentication();
             services.AddAutoMapper(typeof(MappingProfiles));
-            services.AddControllers();
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddControllers(o =>
+            {
+                o.CacheProfiles.Add("60SecondsDuraion", new CacheProfile
+                {
+                    Duration = 60
+                });
+            });
             services.AddScoped<IAuthManager, AuthManager>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             /** For Handling Reference Loops Calls when serializing
             
@@ -49,6 +58,7 @@ namespace Web_Api_Net5.AppServices
             app.UseMySwagger();
             app.UseCors();
             app.UseHttpsRedirection();
+            app.UseCaching();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
