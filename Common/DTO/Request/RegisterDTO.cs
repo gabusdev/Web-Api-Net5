@@ -1,15 +1,12 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-
-namespace Common.Request
+﻿namespace Common.Request
 {
     public class RegisterDTO
     {
-        
+
         public string Username { get; set; }
-        
+
         public string FirstName { get; set; }
-        
+
         public string LastName { get; set; }
 
         public string Password { get; set; }

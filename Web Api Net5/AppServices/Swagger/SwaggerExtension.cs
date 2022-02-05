@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using System;
+using System.Collections.Generic;
 
 namespace AppServices.MySwagger
 {
@@ -51,9 +51,9 @@ namespace AppServices.MySwagger
                         }
                     });
                 }
-                
+
             });
-            
+
         }
 
         public static void UseMySwagger(this IApplicationBuilder app)

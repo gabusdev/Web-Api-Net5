@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace AppServices.Authorization
 {
@@ -9,7 +7,7 @@ namespace AppServices.Authorization
     {
         public static void ConfigureAuthorization(this IServiceCollection services, bool locked = false)
         {
-            
+
             services.AddAuthorization(opt =>
             {
                 if (locked)
@@ -22,7 +20,7 @@ namespace AppServices.Authorization
                 opt.AddPolicy("Admin",
                     policy => policy.RequireRole("Admin"));
             });
-            
+
         }
     }
 }

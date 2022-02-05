@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
 using Common.Response;
-using Core.Models;
 using DataEF.UnitOfWork;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Linq.Expressions;
 
 namespace Web_Api_Net5.Controllers
 {

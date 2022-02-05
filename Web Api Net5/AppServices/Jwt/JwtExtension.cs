@@ -9,23 +9,23 @@ namespace AppServices.Jwt
 {
     public static class JwtExtension
     {
-        public static void ConfigureJwt(this IServiceCollection services, IConfiguration config, bool encrypt=false)
+        public static void ConfigureJwt(this IServiceCollection services, IConfiguration config, bool encrypt = false)
         {
             var jwtSettings = config.GetSection("Jwt");
             // Procure add key and secret in Enviroment for security
-            var key = Environment.GetEnvironmentVariable("JwtKey") 
+            var key = Environment.GetEnvironmentVariable("JwtKey")
                 ?? jwtSettings.GetValue<string>("Key");
-            
+
             var tokenParams = new TokenValidationParameters
             {
                 ValidateIssuer = true,
                 ValidateAudience = true,
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
-                ValidIssuer = jwtSettings.GetValue("Issuer",""),
-                ValidAudience = jwtSettings.GetValue("Audience",""),
+                ValidIssuer = jwtSettings.GetValue("Issuer", ""),
+                ValidAudience = jwtSettings.GetValue("Audience", ""),
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
-                
+
             };
             if (encrypt)
             {
@@ -34,13 +34,14 @@ namespace AppServices.Jwt
                 tokenParams.TokenDecryptionKey =
                     new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
             }
-            
+
             services.AddAuthentication(o =>
             {
                 o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddJwtBearer(o => {
+            .AddJwtBearer(o =>
+            {
                 o.TokenValidationParameters = tokenParams;
             });
         }

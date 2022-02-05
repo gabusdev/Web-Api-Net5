@@ -9,7 +9,7 @@ namespace DataEF.UnitOfWork
     {
         public IGenericRepository<Hotel> Hotels { get; set; }
         public IGenericRepository<Country> Countries { get; set; }
-        
+
         private readonly CoreDbContext _context;
         private bool disposed = false;
 

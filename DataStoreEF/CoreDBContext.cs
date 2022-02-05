@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataEF
 {
-    public class CoreDbContext: IdentityDbContext<User>
+    public class CoreDbContext : IdentityDbContext<User>
     {
-        public CoreDbContext(DbContextOptions option) : base(option) {}
+        public CoreDbContext(DbContextOptions option) : base(option) { }
 
         public DbSet<Country> Countries { get; set; }
-        
+
         public DbSet<Hotel> Hotels { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)

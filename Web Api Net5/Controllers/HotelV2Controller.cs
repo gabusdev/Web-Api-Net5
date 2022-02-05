@@ -3,7 +3,6 @@ using BasicResponses;
 using Common.DTO.Request;
 using Common.Response;
 using DataEF.UnitOfWork;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;

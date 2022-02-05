@@ -45,7 +45,7 @@ namespace DataEF.Repository
         {
             _db.RemoveRange(entities);
         }
-        
+
         public async Task<ICollection<T>> GetAllAsync(params Expression<Func<T, object>>[] includes)
         {
             return await GetAllOrderedAsync(null, null, false, includes);
@@ -75,7 +75,7 @@ namespace DataEF.Repository
             IQueryable<T> query = _db;
 
             query = AddIncludes(query, includes);
-            
+
             return await query.SingleOrDefaultAsync(match);
         }
 
@@ -93,7 +93,7 @@ namespace DataEF.Repository
         public void Update(T t)
         {
             _db.Attach(t);
-            _context.Entry(t).State= EntityState.Modified;
+            _context.Entry(t).State = EntityState.Modified;
         }
 
         private IQueryable<T> AddIncludes(IQueryable<T> query, Expression<Func<T, object>>[] includes)

@@ -17,7 +17,7 @@ namespace DataEF.Repository
         Task<ICollection<T>> GetAllAsync(params Expression<Func<T, object>>[] includes);
         Task<ICollection<T>> GetAllAsync(Expression<Func<T, bool>> predicate,
             params Expression<Func<T, object>>[] includes);
-        Task<ICollection<T>> GetAllOrderedAsync(Expression < Func<T, object>> orderBy, bool desc,
+        Task<ICollection<T>> GetAllOrderedAsync(Expression<Func<T, object>> orderBy, bool desc,
             params Expression<Func<T, object>>[] includes);
         Task<ICollection<T>> GetAllOrderedAsync(Expression<Func<T, bool>> predicate,
             Expression<Func<T, object>> orderBy, bool desc,

@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace AppServices.MyCors
 {
@@ -8,7 +6,8 @@ namespace AppServices.MyCors
     {
         public static void ConfigureCors(this IServiceCollection services)
         {
-            services.AddCors(options => {
+            services.AddCors(options =>
+            {
                 options.AddPolicy("MyCorsPolicy", builder =>
                     builder.AllowAnyOrigin()
                     .AllowAnyMethod()

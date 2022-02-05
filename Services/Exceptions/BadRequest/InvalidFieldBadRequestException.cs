@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Localization;
-using System;
+﻿using System;
 
 namespace Services.Exceptions
 {
@@ -10,6 +9,6 @@ namespace Services.Exceptions
             CustomCode = Convert.ToBoolean(customCode) ? customCode : 400000;
             CustomMessage = message ?? CustomCode.ToString();
         }
-        
+
     }
 }

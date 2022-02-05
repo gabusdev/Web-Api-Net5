@@ -10,7 +10,7 @@ namespace DataEF.Configurations.Entities
         {
             builder.Property(c => c.ShortName)
                 .HasMaxLength(2);
-            
+
             builder.HasData(
                 new Country
                 {

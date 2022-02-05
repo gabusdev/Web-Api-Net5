@@ -1,21 +1,21 @@
-﻿using AppServices.MyCors;
+﻿using APICore.API.Middlewares;
+using AppServices.ApiVersioning;
+using AppServices.Authorization;
+using AppServices.Caching;
+using AppServices.FluentValidation;
+using AppServices.Jwt;
+using AppServices.MyCors;
+using AppServices.MyIdentity;
 using AppServices.MySqlServerContext;
 using AppServices.MySwagger;
-using AppServices.MyIdentity;
+using DataEF.UnitOfWork;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Builder;
-using AppServices.Jwt;
-using DataEF.UnitOfWork;
-using APICore.API.Middlewares;
-using AppServices.Authorization;
-using Services.Utils;
 using Services;
 using Services.Impl;
-using AppServices.FluentValidation;
-using AppServices.ApiVersioning;
-using Microsoft.AspNetCore.Mvc;
-using AppServices.Caching;
+using Services.Utils;
 
 namespace Web_Api_Net5.AppServices
 {

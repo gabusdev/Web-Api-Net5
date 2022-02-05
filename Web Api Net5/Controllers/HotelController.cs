@@ -9,10 +9,8 @@ using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Services.Exceptions;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using X.PagedList;
 
 namespace Web_Api_Net5.Controllers
 {

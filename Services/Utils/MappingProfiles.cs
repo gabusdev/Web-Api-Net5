@@ -5,7 +5,7 @@ using Core.Models;
 
 namespace Services.Utils
 {
-    public class MappingProfiles: Profile
+    public class MappingProfiles : Profile
     {
         public MappingProfiles()
         {

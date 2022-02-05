@@ -3,16 +3,11 @@ using BasicResponses;
 using Common.Request;
 using Common.Response;
 using Core.Entities.Enums;
-using Core.Models;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Logging;
 using Services;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Web_Api_Net5.Controllers
