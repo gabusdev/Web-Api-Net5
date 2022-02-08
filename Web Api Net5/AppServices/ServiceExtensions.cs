@@ -8,6 +8,8 @@ using AppServices.MyCors;
 using AppServices.MyIdentity;
 using AppServices.MySqlServerContext;
 using AppServices.MySwagger;
+using AppServices.RateLimit;
+using AspNetCoreRateLimit;
 using DataEF.UnitOfWork;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +33,7 @@ namespace Web_Api_Net5.AppServices
             services.ConfigureFluentValidation();
             services.ConfigureIdentity();
             services.ConfigureJwt(conf);
+            services.ConfigureRateLimit();
             services.ConfigureSqlServerContext(conString);
             services.ConfigureSwagger(conf, true);
             services.AddAuthentication();
@@ -59,6 +62,7 @@ namespace Web_Api_Net5.AppServices
             app.UseCors();
             app.UseHttpsRedirection();
             app.UseCaching();
+            app.UseIpRateLimiting();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
