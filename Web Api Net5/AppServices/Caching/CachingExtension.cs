@@ -8,22 +8,22 @@ namespace AppServices.Caching
         public static void ConfigureCaching(this IServiceCollection services)
         {
             services.AddResponseCaching();
-            //services.AddHttpCacheHeaders(expirationOption =>
-            //{
-            //    expirationOption.MaxAge = 60;
-            //    expirationOption.CacheLocation = Marvin.Cache.Headers.CacheLocation.Private;
-            //},
-            //validationOption =>
-            //{
-            //    validationOption.MustRevalidate = true;
-            //}
-            //);
+            services.AddHttpCacheHeaders(expirationOption =>
+            {
+                expirationOption.MaxAge = 60;
+                expirationOption.CacheLocation = Marvin.Cache.Headers.CacheLocation.Private;
+            },
+            validationOption =>
+            {
+                validationOption.MustRevalidate = true;
+            }
+            );
 
         }
         public static void UseCaching(this IApplicationBuilder app)
         {
             app.UseResponseCaching();
-            //app.UseHttpCacheHeaders();
+            app.UseHttpCacheHeaders();
         }
     }
 }

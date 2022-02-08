@@ -27,6 +27,7 @@ namespace APICore.API.Middlewares
             try
             {
                 await _next.Invoke(context);
+                return;
             }
             catch (CustomBaseException ex)
             {
@@ -39,8 +40,8 @@ namespace APICore.API.Middlewares
                 context.Response.StatusCode = 500;
                 Message = ex.Message;
             }
-
-            if (!context.Response.HasStarted && context.Response.StatusCode != 204)
+            
+            if (!context.Response.HasStarted)
             {
                 context.Response.ContentType = "application/json";
 
