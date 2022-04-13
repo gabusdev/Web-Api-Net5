@@ -1,14 +1,8 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Serilog;
-using Serilog.Events;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AppServices.MyLogging;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
+using Serilog;
+using System;
 
 namespace Web_Api_Net5
 {
@@ -16,7 +10,7 @@ namespace Web_Api_Net5
     {
         public static void Main(string[] args)
         {
-            Log.Logger = MyLogging.MyConfigureLogger();
+            Log.Logger = LoggingExtension.ConfigureLogger();
             try
             {
                 Log.Information("Application is Starting");
