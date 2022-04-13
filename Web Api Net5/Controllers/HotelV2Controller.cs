@@ -12,8 +12,8 @@ using X.PagedList;
 namespace Web_Api_Net5.Controllers
 {
     [ApiVersion("2.0", Deprecated = true)] // because of this, with Deprecated as example
-    [Route("api/{v:apiversion}/hotel")] // For using Versioning in Routes
-    [Route("api/hotel")] // This uses api-version header after cunfigured otherwise api-version query paramether
+    //[Route("api/{v:apiversion}/hotel")] // For using Versioning in Routes
+    [Route("api/Hotel")] // This uses api-version header after cunfigured otherwise api-version query paramether
     [ApiController]
     public class HotelV2Controller : ControllerBase
     {
